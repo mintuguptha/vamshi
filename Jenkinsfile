@@ -10,9 +10,9 @@ pipeline{
       steps{
         script{
           if(currentBuild.result == 'SUCCESS'){
-            githubNotify status: 'success', context: GITHUB_STATUS
+            githubNotify status: 'success', context: 'ci_success'
           }else{
-            githubNotify status: 'failure', context: GITHUB_STATUS
+            githubNotify status: 'failure', context: 'ci_failure'
           }
         }
       }
