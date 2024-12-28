@@ -18,10 +18,5 @@ pipeline {
                 }
             }
         }
-
-        stage('Test') {
-            steps {
-                githubNotify context: 'Test', status: 'PENDING'
-                script {
-                    try {
-              
+    }
+}
