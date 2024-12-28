@@ -1,21 +1,27 @@
-pipeline{
-  agent any
-  stages{
-    stage('echo'){ 
-      steps{
-         script{echo 'hello world'}
-      }
-    }
-    stage('notify github'){
-      steps{
-        script{
-          if(currentBuild.result == 'SUCCESS'){
-            githubNotify status: 'success', context: 'ci_success'
-          }else{
-            githubNotify status: 'failure', context: 'ci_failure'
-          }
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                githubNotify context: 'Build', status: 'PENDING'
+          
+                script {
+                    try {
+                        echo 'Building...'
+                        sleep 5
+                        githubNotify context: 'Build', status: 'SUCCESS', description: 'Build completed successfully'
+                    } catch (Exception e) {
+                        githubNotify context: 'Build', status: 'FAILURE', description: 'Build failed'
+                        throw e
+                    }
+                }
+            }
         }
-      }
-    }
-  }
-}
+
+        stage('Test') {
+            steps {
+                githubNotify context: 'Test', status: 'PENDING'
+                script {
+                    try {
+              
